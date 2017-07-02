@@ -33,14 +33,22 @@ Fig lxc-ls
 this will show the state of all your containers with little more specs. or you can also use lxc-top to list the running container with resources it use.
 Fig lxc-top
 
-Now to start using your container all you need to do is attach to the container.To get directly access the container as root user without authentication you can use lxc-attach
+Now to start using your container all you need to do is attach to the container.To get directly access the container as root without authentication you can use lxc-attach
 $sudo lxc-attach -n mycontainer
 this is always not recommended due to root login, so in place you can use lxc-console
 $sudo lxc-console -n mycontainer
-this will give you login prompt (default username is ubuntu with ubuntu as password).
+this will give you login prompt (default username is ubuntu with password as ubuntu).
 To dettach from the container just press Ctrl-a followed by q.
 
-If you are using LXC for development or testing purposes then their is high chances that you came across a senario where you require diffrent architechture system then your host.LXC has templates for almost every cpu arch like i836, powerpc and armhf etc.
+If you are using LXC for development or testing purposes then their is high probability that you came across a senario where you require different architechture system then your host.LXC has templates for most of the cpu arch like i836, powerpc and armhf etc.
 to create the continer of different architechture you just need to supply --arch= on lxc-create command.Or you can even view the full list and select from them through this command.
 $sudo lxc-create --template download --name mycontainer
 You can stop a container using lxc-stop or freeze/pause a running container using lxc-freeze and then lxc-unfreeze to unfreeze it.lxc-destroy will delete the container image.To use these tools all you need to do is paas -n containername with these commands.
+Lxc also support cloning and snapshoting of container. To clone a container you can use 
+$sudo lxc-copy -n mycontainer -N newcontainer 
+Note: To clone your container must not be in running state.
+We will discuss the snapshoting in next section.
+
+Configuring Linux Container
+Till now we have used lxc tools for general uses.But when you are using containers in production or development enviornment there is more controls and option you need, to make your work done.To configure a container you must know how to use config file. But first you need to know where is your containers actually in your disk.The answer is at path /var/lib/lxc/your_container_name. Inside this path you will find rootfs directory which is the root of your container(also called backing store).you can change this contianer path while creating container using lxc-create by passing parameter
+-P newpath or --lxcpath=PATH.
